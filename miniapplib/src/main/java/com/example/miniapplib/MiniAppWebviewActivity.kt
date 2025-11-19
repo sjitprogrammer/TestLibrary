@@ -2,9 +2,14 @@ package com.example.miniapplib
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -30,9 +35,24 @@ class MiniAppWebviewActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView() {
         webView = findViewById(R.id.paymentWebView)
-        webView.settings.javaScriptEnabled = true
-        webView.settings.domStorageEnabled = true
-        webView.loadUrl("file:///android_asset/mock_jsbridge.html")
+
+        webView.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            // อย่าไปบังคับ cache mode แปลก ๆ ถ้าไม่จำเป็น
+            cacheMode = WebSettings.LOAD_DEFAULT
+        }
+
+        webView.webViewClient = object : WebViewClient(){
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                Log.e("WV", "onReceivedError: ${error?.description}")
+            }
+        }
+        webView.loadUrl("https://misternay.github.io/miniapp-jsbridge-demo")
         webView.addJavascriptInterface(this, "JSBridge")
 
     }
@@ -69,12 +89,30 @@ class MiniAppWebviewActivity : AppCompatActivity() {
     }
 
     @JavascriptInterface
+    fun getQrCode() {
+        registerGetQrCode()
+    }
+
+    @JavascriptInterface
+    fun closeWebview() {
+        finish()
+    }
+
+    @JavascriptInterface
     fun paymentResutl(status: String, txnId: String?, message: String) {
         onPaymentResultFromJs(status, txnId, message)
     }
 
     private fun registerUiListener() {
         scannerLauncher.launch(
+            ScanOptions().setPrompt("Scan Qr Code")
+                .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+        )
+
+    }
+
+    private fun registerGetQrCode() {
+        getQrCodeLauncher.launch(
             ScanOptions().setPrompt("Scan Qr Code")
                 .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
         )
@@ -90,6 +128,23 @@ class MiniAppWebviewActivity : AppCompatActivity() {
         } else {
             webView.loadUrl("javascript:bridge.openScannerImageCallback(true)")
             onPaymentResultFromJs(status = "success", txnId = result.contents, message = "")
+//            Toast.makeText(this, "Scanned Value : " + result.contents, Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private val getQrCodeLauncher = registerForActivityResult<ScanOptions, ScanIntentResult>(
+        ScanContract()
+    ) { result ->
+
+        if (result.contents == null) {
+            val errorCode = "MAW9999"
+            val errorDescription = "Something Went Wrong"
+            webView.loadUrl("javascript:bridge.getQrCodeCallbackError(\"${errorCode}\",\"${errorDescription}\")")
+//            Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show()
+        } else {
+            webView.loadUrl("javascript:bridge.getQrCodeCallback(true)")
+//            onPaymentResultFromJs(status = "success", txnId = result.contents, message = "")
 //            Toast.makeText(this, "Scanned Value : " + result.contents, Toast.LENGTH_SHORT).show()
         }
 
