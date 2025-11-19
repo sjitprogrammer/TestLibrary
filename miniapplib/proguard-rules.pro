@@ -19,3 +19,29 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# กันไม่ให้ Public API ของ lib ถูกลบ/เปลี่ยนชื่อมากเกินไป
+-keep class com.example.miniapplib.PaymentLib {
+    *;
+}
+
+-keep class com.example.miniapplib.PaymentResult {
+    *;
+}
+
+-keep class com.example.miniapplib.QrScanResult {
+    *;
+}
+
+-keep class com.example.miniapplib.MiniAppWebviewActivity {
+    *;
+}
+
+-keep class com.example.miniapplib.ScannerActivity {
+    *;
+}
+
+# สำคัญมาก: อย่าลบ method ที่ติด @JavascriptInterface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}

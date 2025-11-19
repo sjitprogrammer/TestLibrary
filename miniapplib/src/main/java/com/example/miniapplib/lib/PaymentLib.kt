@@ -9,7 +9,6 @@ object PaymentLib {
 
     private var paymentCallback: ((PaymentResult) -> Unit)? = null
 
-    // callback ของ QR Scan ใหม่
     private var scanCallback: ((QrScanResult) -> Unit)? = null
 
     fun startPayment(

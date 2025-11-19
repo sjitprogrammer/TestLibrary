@@ -39,7 +39,6 @@ class MiniAppWebviewActivity : AppCompatActivity() {
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
-            // อย่าไปบังคับ cache mode แปลก ๆ ถ้าไม่จำเป็น
             cacheMode = WebSettings.LOAD_DEFAULT
         }
 
@@ -151,7 +150,6 @@ class MiniAppWebviewActivity : AppCompatActivity() {
     }
 }
 
-// helper สำหรับ escape string ให้เป็น JS string literal
 private fun String.toJsString(): String {
     return "\"" + this
         .replace("\\", "\\\\")
