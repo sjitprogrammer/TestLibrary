@@ -70,7 +70,7 @@ afterEvaluate {
                 // ตรงนี้ไว้ตั้งค่าที่ JitPack จะใช้
                 groupId = "com.github.sjitprogrammer"
                 artifactId = "TestLibrary"
-                version = "1.4"
+                version = "1.5"
             }
         }
     }

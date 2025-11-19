@@ -21,27 +21,32 @@
 #-renamesourcefileattribute SourceFile
 
 # กันไม่ให้ Public API ของ lib ถูกลบ/เปลี่ยนชื่อมากเกินไป
+# --- Public API ของ lib ---
+
+# ให้คง PaymentLib ไว้ทั้ง class (ชื่อไม่ถูกเปลี่ยน, method ไม่โดนลบ)
 -keep class com.example.miniapplib.lib.PaymentLib {
     *;
 }
 
+# ให้คง sealed class PaymentResult + subclass ทั้งหมด
 -keep class com.example.miniapplib.lib.PaymentResult {
     *;
 }
+-keep class com.example.miniapplib.lib.PaymentResult$* {
+    *;
+}
 
+# ให้คง sealed class QrScanResult + subclass ทั้งหมด
 -keep class com.example.miniapplib.lib.QrScanResult {
     *;
 }
-
--keep class com.example.miniapplib.MiniAppWebviewActivity {
+-keep class com.example.miniapplib.lib.QrScanResult$* {
     *;
 }
 
--keep class com.example.miniapplib.scanner.ScannerActivity {
-    *;
-}
 
-# สำคัญมาก: อย่าลบ method ที่ติด @JavascriptInterface
+# สำคัญ: อย่าลบ method ที่ติด @JavascriptInterface ใน webview bridge
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
 }
+
