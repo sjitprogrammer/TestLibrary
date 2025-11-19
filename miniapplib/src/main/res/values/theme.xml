@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MiniAppLib" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- ปรับสีตามใจ -->
+        <item name="colorPrimary">?attr/colorPrimary</item>
+        <item name="colorPrimaryVariant">?attr/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">?attr/colorOnPrimary</item>
+    </style>
+</resources>

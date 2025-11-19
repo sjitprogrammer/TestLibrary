@@ -5,11 +5,11 @@
         <activity
             android:name=".scanner.ScannerActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.NoActionBar"/>
+            android:theme="@style/Theme.MiniAppLib"/>
         <activity
             android:name=".MiniAppWebviewActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.NoActionBar" />
+            android:theme="@style/Theme.MiniAppLib" />
     </application>
 
 </manifest>
