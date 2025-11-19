@@ -21,15 +21,15 @@
 #-renamesourcefileattribute SourceFile
 
 # กันไม่ให้ Public API ของ lib ถูกลบ/เปลี่ยนชื่อมากเกินไป
--keep class com.example.miniapplib.PaymentLib {
+-keep class com.example.miniapplib.lib.PaymentLib {
     *;
 }
 
--keep class com.example.miniapplib.PaymentResult {
+-keep class com.example.miniapplib.lib.PaymentResult {
     *;
 }
 
--keep class com.example.miniapplib.QrScanResult {
+-keep class com.example.miniapplib.lib.QrScanResult {
     *;
 }
 
@@ -37,7 +37,7 @@
     *;
 }
 
--keep class com.example.miniapplib.ScannerActivity {
+-keep class com.example.miniapplib.scanner.ScannerActivity {
     *;
 }
 
