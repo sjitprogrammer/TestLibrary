@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniApp as Services Demo</title>
+    <script>
+        function initializeBridge() {
+            if (!window.bridge) {
+                window.bridge = {};
+            }
+        }
+
+        const successCallback = () => {
+            alert('Callback successful!');
+        };
+
+        const errorCallback = (errorCode, errorDescription) => {
+            alert(errorDescription);
+        };
+
+        const triggerOpenScanner = (callback,callbackError) => {
+            initializeBridge();
+            if (window.JSBridge) {
+                // Android platform
+                window.bridge.openScannerImageCallbackError = callbackError;
+                window.bridge.openScannerImageCallback = callback;
+                window.JSBridge.openScanner?.();
+            } else if (window.webkit) {
+                // iOS platform
+                window.bridge.openScannerImageCallbackError = callbackError;
+                window.bridge.openScannerImageCallback = callback;
+                window.webkit.messageHandlers.observer.postMessage({
+                name: 'openScanner',
+            });
+            }
+        };
+
+        function onOpenScanner() {
+            triggerOpenScanner(successCallback,errorCallback);
+        }
+    </script>
+
+    <style>
+        #galleryImage {
+            display: none;
+            width: 300px;
+            height: auto;
+            margin-top: 20px;
+       }
+
+       .btn {
+            border: 2px solid black;
+            background-color: white;
+            color: black;
+            padding: 14px 28px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Blue */
+        .info {
+            border-color: #2196F3;
+            color: dodgerblue
+        }
+
+        .info:hover {
+            background: #2196F3;
+            color: white;
+        }
+
+    </style>
+
+</head>
+<body>
+<h1>MiniApp as Services Demo</h1>
+
+<P>
+    <button class="btn info" onclick="onOpenScanner()">openScanner</button>
+</P>
+
+</body>
+
+</html>
