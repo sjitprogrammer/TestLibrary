@@ -69,8 +69,8 @@ afterEvaluate {
 
                 // ตรงนี้ไว้ตั้งค่าที่ JitPack จะใช้
                 groupId = "com.github.sjitprogrammer"
-                artifactId = "miniapplib"
-                version = "1.0.0"
+                artifactId = "TestLibrary"
+                version = "1.2"
             }
         }
     }
